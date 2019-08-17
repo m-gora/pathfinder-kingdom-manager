@@ -37,5 +37,4 @@ export default class KingdomInfo extends React.Component {
       )
   }
 
-
 }
