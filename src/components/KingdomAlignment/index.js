@@ -1,27 +1,26 @@
 import React from 'react';
+
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
-export default class KingdomAlignment extends React.Component {
+import { connect } from 'react-redux';
+
+import changeAlignment from './action';
+
+class KingdomAlignment extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this.onChange = this.onChange.bind(this);
-  }
-
-  onChange(e) {
-
   }
 
   render() {
       return (
         <FormControl>
           <InputLabel htmlFor="alignment-label-placeholder">Alignment</InputLabel>
-          <Select name="alignment" displayEmpty>
+          <Select name="alignment" value={this.props.alignment} >
             <MenuItem value="LG">Lawful Good</MenuItem>
             <MenuItem value="NG">Neutral Good</MenuItem>
             <MenuItem value="CG">Chaotic Good</MenuItem>
@@ -38,3 +37,21 @@ export default class KingdomAlignment extends React.Component {
   }
 
 }
+
+// bind redux state to react props
+// ownProps is the props that is set in the parent component for this component
+// e.g. <KingdomAlignment someProp='2' />
+function mapStateToProps(state, ownProps) {
+  return { alignment: state.kingdomAlignment };
+}
+
+// wire the onChange event to redux dispatch
+function mapDispatchToProps(dispatch, ownProps) {
+  return {
+    onAlignmentChange: () => {
+      dispatch(changeAlignment(ownProps.alignment));
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(KingdomAlignment);
